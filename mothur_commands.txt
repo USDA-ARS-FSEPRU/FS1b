@@ -1,0 +1,219 @@
+#FIRST SECTION: Processing 16S amplicon sequences using mothur
+    
+#Purpose: To use mothur to process paired-end 16S rRNA gene sequences from the research paper "Shifts in the nasal microbiota of swine in response to different routes of oxytetracycline administration".
+
+#Files needed:
+#*.fastq files from Bioproject PRJNA518919
+
+#Open mothur, then input the following commands (output files are listed directly below each command):
+
+#Create directory of fastq files and file names
+make.file(inputdir=<directory path>, type=fastq, prefix=stability)
+#Output: stability.files
+
+#Check stability.files to make sure the text file has the correct three columns (sample name, R1*.fastq, R2*.fastq). If the three columns are not labeled correctly, try the following awk command:
+cat stability.files | awk '{split($2, a, "/"); split(a[7], b, "_"); print b[1], "\t", $2, "\t", $3}' > FS1bfinal.file
+#Renamed stability.files as FS1bfinal.file
+
+#Combine reads and data from all samples
+make.contigs(file=FS1bfinal.file, processors=39)
+#Output:
+#FS1bfinal.trim.contigs.fasta
+#FS1bfinal.trim.contigs.qual
+#FS1bfinal.contigs.report
+#FS1bfinal.scrap.contigs.fasta
+#FS1bfinal.scrap.contigs.qual
+#FS1bfinal.contigs.groups
+
+#Summarize FS1bfinal.trim.contigs.fasta
+summary.seqs(fasta=current)
+#Output:FS1bfinal.trim.contigs.summary
+
+#Remove sequences with ambiguous bases, anything longer than 275bp, 6 homopolymeric tracts
+screen.seqs(fasta=FS1bfinal.trim.contigs.fasta,summary=FS1bfinal.trim.contigs.summary, maxambig=0, maxlength=275, maxhomop=6, group=FS1bfinal.contigs.groups)
+#Output:
+#FS1bfinal.trim.contigs.good.summary
+#FS1bfinal.trim.contigs.good.fasta
+#FS1bfinal.trim.contigs.bad.accnos
+#FS1bfinal.contigs.good.groups
+
+#Merge duplicate sequences
+unique.seqs(fasta=current)
+#Output:
+#FS1bfinal.trim.contigs.good.names
+#FS1bfinal.trim.contigs.good.unique.fasta
+
+#Generate table with names of unique sequences and names of the groups
+count.seqs(name=current, group=current)
+#Output: FS1bfinal.trim.contigs.good.count_table
+
+#Summarize FS1bfinal.trim.contigs.good.count_table, FS1bfinal.trim.contigs.good.unique.fasta
+summary.seqs(count=current, fasta=current, processors=39)
+#Output: FS1bfinal.trim.contigs.good.unique.summary
+
+#Download or import silva full length sequences and taxonomy references from https://mothur.org/wiki/Silva_reference_files
+#Unzip tar.gz file and use the silva*.align file for pcr.seqs command
+#I used silva version 128, which was the latest version at the time.
+pcr.seqs(fasta=silva.seed_v128.align, start=11894, end=25319, keepdots=F)
+#Output: silva.seed_v128.pcr.align
+
+#Rename to a shorter file name
+rename.file(input=silva.seed_v128.pcr.align, new=silva.v4.fasta)
+
+summary.seqs(fasta=silva.v4.fasta)
+#Output: silva.v4.summary
+
+#Align sequences to reference sequences
+align.seqs(fasta=FS1bfinal.trim.contigs.good.unique.fasta, reference=silva.v4.fasta, flip=T)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.align
+#FS1bfinal.trim.contigs.good.unique.align.report
+#FS1bfinal.trim.contigs.good.unique.flip.accnos
+
+summary.seqs(fasta=current, count=FS1bfinal.trim.contigs.good.count_table)
+#Output: FS1bfinal.trim.contigs.good.unique.summary
+
+#Keep sequences that start at or before position 1968 and end at or after position 11550
+screen.seqs(fasta=FS1bfinal.trim.contigs.good.unique.align, count=FS1bfinal.trim.contigs.good.count_table, start=1968, end=11550, maxhomop=6)
+#Output: 
+#FS1bfinal.trim.contigs.good.unique.good.align
+#FS1bfinal.trim.contigs.good.unique.bad.accnos
+#FS1bfinal.trim.contigs.good.good.count_table
+
+summary.seqs(fasta=current, count=current)
+#Output: FS1bfinal.trim.contigs.good.unique.good.summary
+
+#Filter out sequences with overhangs at both ends of the region
+filter.seqs(fasta=FS1bfinal.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+#Output: 
+#FS1bfinal.filter
+#FS1bfinal.trim.contigs.good.unique.good.filter.fasta
+
+unique.seqs(fasta=current, count=FS1bfinal.trim.contigs.good.good.count_table)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.count_table
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.fasta
+
+#Pre-cluster sequences by allowing up to 2 differences between sequences.
+pre.cluster(fasta=current, count=current, diffs=2)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+#*.map
+
+#Remove chimeric sequences
+chimera.vsearch(fasta=current, count=current, dereplicate=t)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.chimeras
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.accnos
+
+#Remove chimeric sequences from fasta file
+remove.seqs(fasta=current, accnos=current)
+#Output: FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta
+
+summary.seqs(fasta=current, count=current)
+#Output: FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.summary
+
+#Classify sequences
+classify.seqs(fasta=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table, reference=silva.v4.fasta, taxonomy=silva.seed_v128.tax, cutoff=80)
+#Output: 
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.taxonomy
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.tax.summary
+
+#Remove undesirable sequences with specific taxon labels
+remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.pick.taxonomy
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table
+
+summary.tax(taxonomy=current, count=current)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.pick.tax.summary
+
+#Remove mock samples (the *.pick.taxonomy file no longer exists, so I used the *.pick.pick.taxonomy file
+remove.groups(count=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table, fasta=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, taxonomy=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.pick.pick.taxonomy, groups=Mock)
+#Output:
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.pick.count_table
+#FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.pick.pick.pick.taxonomy
+
+#Renamed 'FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta' to 'FS1bfinal.outsingletons.fasta'
+#Renamed 'FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.pick.count_table' to 'FS1bfinal.outsingletons.count_table'
+
+#Check sequence quality using fastQC and multiQC, FS1b5000count directory
+#Download fastqc to your computer and enter in the terminal the following commands:
+fastqc
+mkdir fastqc
+fastqc *.fastq -o fastqc
+
+#MultiQC for nasal wash
+multiqc FS1BP*NWD*_fastqc.zip
+#Output: 
+#multiqc_FS1b5000nasalwash_data
+#multiqc_report_FS1b5000nasalwash.html
+
+#MultiQC for tonsil tissue
+multiqc FS1BP*TT*_fastqc.zip
+#Output:
+#multiqc_FS1b5000tonsiltissue_data
+#multiqc_report_FS1b5000tonsiltissue.html
+
+
+#Take out all the sequences that occur once
+split.abund(fasta=FS1bfinal.outsingletons.fasta, count=FS1bfinal.outsingletons.count_table, cutoff=1, accnos=true)
+#Output:
+#FS1bfinal.outsingletons.rare.count_table
+#FS1bfinal.outsingletons.abund.count_table
+#rare.accnos
+#abund.accnos
+#FS1bfinal.outsingletons.rare.fasta
+#FS1bfinal.outsingletons.abund.fasta
+
+
+#Calculate uncorrected pairwise distances between aligned DNA sequences
+dist.seqs(fasta=FS1bfinal.outsingletons.abund.fasta, cutoff=0.03)
+#Output: FS1bfinal.outsingletons.abund.dist
+
+#Assign sequences to OTUs
+cluster(column=current, count=FS1bfinal.outsingletons.abund.count_table)
+#Output: 
+#FS1bfinal.outsingletons.abund.opti_mcc.list
+#FS1bfinal.outsingletons.abund.opti_mcc.steps
+#FS1bfinal.outsingletons.abund.opti_mcc.sensspec
+
+#Determine number of sequences in each OTU from each sample
+make.shared(list=current, count=FS1bfinal.outsingletons.abund.count_table, label=0.03)
+#Output: FS1bfinal.outsingletons.abund.opti_mcc.shared
+
+#Identify taxonomy for each OTU
+classify.otu(list=current, count=current, taxonomy=FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.seed_v128.wang.pick.pick.pick.taxonomy, label=0.03)
+#Output: 
+#FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.taxonomy
+#FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.tax.summary
+
+dist.seqs(fasta=current, output=lt, processors=39)
+#Output: FS1bfinal.outsingletons.abund.phylip.dist
+
+#Files of importance
+#shared=FS1bfinal.outsingletons.abund.opti_mcc.shared
+#constaxonomy=FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.taxonomy
+#count=FS1bfinal.outsingletons.abund.count_table
+
+#Determine number of sequences in each sample
+count.groups(shared=FS1bfinal.outsingletons.abund.opti_mcc.shared)
+#Output: FS1bfinal.outsingletons.abund.opti_mcc.count.summary
+
+#Normalize data
+sub.sample(shared=FS1bfinal.outsingletons.abund.opti_mcc.shared, size=2000)
+#Output: FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared
+
+#See number of sequences in each sample after subsampling as well as number of sequences total
+count.groups(shared=FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared)
+#Output: FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.count.summary (2000 sequences per sample that had at least 2000 sequences. Went from 282 samples before subsampling, down to 242 samples)
+#Total number of sequences: 517435
+
+#Determine final number of sequences
+summary.seqs(fasta=FS1bfinal.outsingletons.abund.fasta)
+#Output: FS1bfinal.outsingletons.abund.summary
