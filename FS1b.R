@@ -5,7 +5,7 @@
 #SECOND SECTION (after processing sequences in mothur): Creating OTU Table
 
 #Purpose: Create OTU table with R using specific files generated from mothur
-
+  
 #Files needed:
 #FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.taxonomy
 #FS1bfinal.outsingletons.abund.taxonomy.csv
