@@ -31,7 +31,7 @@ load("<yourfilename>.RData")
 taxonomy <- read.csv("FS1bfinal.outsingletons.abund.taxonomy.csv") #Import this csv file from working directory using "read.csv" function
 taxonomy$Taxonomy <- gsub('*\\(.*?\\) *', '', taxonomy$Taxonomy) #Substitute (100) and variations of that with nothing ('') from the Taxonomy column
 taxonomy[1:6,3] #Show column number 3, rows 1 through 6 in 'taxonomy' dataframe
-write.csv(taxonomy, file = "FS1babundsingleton2000taxonomy.csv") #Write 'taxonomy' into a csv vile and open the csv file in a spreadsheet editor to remove the size and numbered rows
+write.csv(taxonomy, file = "FS1babundsingleton2000taxonomy.csv") #Write 'taxonomy' into a csv file and open the csv file in a spreadsheet editor to remove the size and numbered rows
 
 #Edit subsample.shared file
 #Save "FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared" file generated from mothur as a csv file in a spreadsheet editor. Named file as "FS1bfinal.singleton.abund.subsample.shared.csv"
@@ -52,7 +52,7 @@ head(OTUtable)
 nrow(OTUtable) #Count number of rows in 'OTUtable'
 ncol(OTUtable) #Count number of columns in 'OTUtable'
 write.csv(OTUtable, file= "FS1babundsingleton2000OTUtable.csv") 
-#Open this csv file in a spreadsheet editor and remove the first row (numbered rows) and "Size" column, and rename "Taxonomy" header to "taxonomy"
+#Open this csv file in a spreadsheet editor and remove the first row (numbered rows) and "Size" column
 
 #Check OTU table
 OTUtable <-read.csv("FS1babundsingleton2000OTUtable.csv", stringsAsFactors = FALSE)
@@ -230,7 +230,7 @@ save(phyloseq.tt2, file="phyloseq.tt2.RData")
 #Pull out metadata from 'nw2' dataframe
 head(nw2[,1:10])
 dim(nw2) #207 1643
-meta.nw2 <- nw2[,1:6] #Take columns 1-5 to make 'meta.nw2'
+meta.nw2 <- nw2[,1:6] #Take columns 1-6 to make 'meta.nw2'
 head(meta.nw2)
 row.names(meta.nw2) <- meta.nw2[,1] #Make column 1 be rownames for 'meta.nw2'
 head(meta.nw2)
@@ -439,7 +439,43 @@ library('wesanderson')
 #Load these two functions from the funfuns R package (https://github.com/Jtrachsel/funfuns)
 NMDS_ellipse
 veganCovEllipse
+
+#Load the following pairwise.adonis function, taken from https://www.researchgate.net/post/How_can_I_do_PerMANOVA_pairwise_contrasts_in_R
+pairwise.adonis <- function(x,factors, sim.function = 'vegdist', sim.method = 'bray', p.adjust.m ='bonferroni')
+{
+  library(vegan)
+  
+  co = combn(unique(as.character(factors)),2)
+  pairs = c()
+  F.Model =c()
+  R2 = c()
+  p.value = c()
+  
+  
+  for(elem in 1:ncol(co)){
+    if(sim.function == 'daisy'){
+      library(cluster); x1 = daisy(x[factors %in% c(co[1,elem],co[2,elem]),],metric=sim.method)
+    } else{x1 = vegdist(x[factors %in% c(co[1,elem],co[2,elem]),],method=sim.method)}
     
+    ad = adonis(x1 ~ factors[factors %in% c(co[1,elem],co[2,elem])] );
+    pairs = c(pairs,paste(co[1,elem],'vs',co[2,elem]));
+    F.Model =c(F.Model,ad$aov.tab[1,4]);
+    R2 = c(R2,ad$aov.tab[1,5]);
+    p.value = c(p.value,ad$aov.tab[1,6])
+  }
+  p.adjusted = p.adjust(p.value,method=p.adjust.m)
+  sig = c(rep('',length(p.adjusted)))
+  sig[p.adjusted <= 0.05] <-'.'
+  sig[p.adjusted <= 0.01] <-'*'
+  sig[p.adjusted <= 0.001] <-'**'
+  sig[p.adjusted <= 0.0001] <-'***'
+  
+  pairw.res = data.frame(pairs,F.Model,R2,p.value,p.adjusted,sig)
+  print("Signif. codes:  0 â***â 0.001 â**â 0.01 â*â 0.05 â.â 0.1 â â 1")
+  return(pairw.res)
+  
+}
+
 #Nasal
     
 #Setting up 'phyloseq.nw2' into dataframes for NMDS calculation
