@@ -12,7 +12,8 @@
 #FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared
 #FS1bfinal.singleton.abund.subsample.shared.csv
 
-#The output files from mothur needed in R for this section and subsequent sections, aside from fasta files, are text files that can be saved as csv for ease of use in R.
+#The output files from mothur needed in R for this section and subsequent sections, aside from fasta files, 
+#are text files that can be saved as csv for ease of use in R.
 
 #Load library package
 library(tidyverse)
@@ -27,14 +28,17 @@ save.image(file="<yourfilename>.RData")
 load("<yourfilename>.RData")
 
 #To start creating OTU table, edit taxonomy file
-#Save "FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.taxonomy" file generated from mothur as a csv file in a spreadsheet editor. Named file as "FS1bfinal.outsingletons.abund.taxonomy.csv"
+#Save "FS1bfinal.outsingletons.abund.opti_mcc.0.03.cons.taxonomy" file generated from mothur as a csv file in a spreadsheet editor. 
+#Named file as "FS1bfinal.outsingletons.abund.taxonomy.csv"
 taxonomy <- read.csv("FS1bfinal.outsingletons.abund.taxonomy.csv") #Import this csv file from working directory using "read.csv" function
 taxonomy$Taxonomy <- gsub('*\\(.*?\\) *', '', taxonomy$Taxonomy) #Substitute (100) and variations of that with nothing ('') from the Taxonomy column
 taxonomy[1:6,3] #Show column number 3, rows 1 through 6 in 'taxonomy' dataframe
-write.csv(taxonomy, file = "FS1babundsingleton2000taxonomy.csv") #Write 'taxonomy' into a csv file and open the csv file in a spreadsheet editor to remove the size and numbered rows
+write.csv(taxonomy, file = "FS1babundsingleton2000taxonomy.csv") #Write 'taxonomy' into a csv file 
+#and open the csv file in a spreadsheet editor to remove the size and numbered rows
 
 #Edit subsample.shared file
-#Save "FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared" file generated from mothur as a csv file in a spreadsheet editor. Named file as "FS1bfinal.singleton.abund.subsample.shared.csv"
+#Save "FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared" file generated from mothur as a csv file in a spreadsheet editor. 
+#Named file as "FS1bfinal.singleton.abund.subsample.shared.csv"
 shared <- read.csv("FS1bfinal.singleton.abund.subsample.shared.csv", stringsAsFactors = FALSE)
 head(shared) #Check on the first part of 'shared' dataframe
 shared[1:6,1]
@@ -62,7 +66,8 @@ head(OTUtable) #Check the first part of 'OTUtable' to make sure it looks ok
 
 #THIRD SECTION: Creating phyloseq objects for each tissue
 
-#Purpose: Create phyloseq objects to be used to calculate alpha and beta diversity measures for nasal and tonsil tissue samples. This section will also use the adonis function to determine the effect of time and treatment on the community structure of nasal and tonsil microbiota.
+#Purpose: Create phyloseq objects to be used to calculate alpha and beta diversity measures for nasal and tonsil tissue samples. 
+#This section will also use the adonis function to determine the effect of time and treatment on the community structure of nasal and tonsil microbiota.
 
 #Files needed:
 #FS1babundsingleton2000OTUtable.csv
@@ -106,7 +111,8 @@ class(meta) #The type of class that 'meta' is is dataframe
 class(otu) #dataframe
 
 #Merge 'otu' and 'meta' data frames
-otu.meta <- merge(meta, otu.trans, by.x=1, by.y=0) #Merge by names of the columns that are common to both x and y (columns with common names between the two data sets)
+otu.meta <- merge(meta, otu.trans, by.x=1, by.y=0) #Merge by names of the columns that are 
+#common to both x and y (columns with common names between the two data sets)
 #by.x=1 means match by 1st column from 'meta'; y=0 means match by rownames in 'otu.trans'
 head(otu.meta[,1:10])
 class(otu.meta) #Check class type of 'otu.meta'. It should be a dataframe.
@@ -318,10 +324,13 @@ save(phyloseq.nw2, file="phyloseq.nw2.RData")
 
 #Run adonis function to determine effect of time and treatment on structure of nasal, tonsil microbiota
 
-#Use vegdist function from vegan package to run distance calculations instead of the distance function (original "distance" function that was used below is no longer available) and use those calculations to run through adonis test
-#vegdist requires that phyloseq object's OTU table has OTUs listed in the columns and sample names listed in rows. Also, remove any OTUs with taxa_sums = 0 or non-numeric values. For example, this command can help remove OTUs with taxa_sums = 0: 
+#Use vegdist function from vegan package to run distance calculations instead of the distance function 
+#(original "distance" function that was used below is no longer available) and use those calculations to run through adonis test
+#vegdist requires that phyloseq object's OTU table has OTUs listed in the columns and sample names listed in rows. 
+#Also, remove any OTUs with taxa_sums = 0 or non-numeric values. For example, this command can help remove OTUs with taxa_sums = 0: 
 #OTU <- prune_taxa(taxa_sums(<yourOTUtable>) > 0, <yourOTUtable>)
-#If you create a separate phyloseq object with this specific OTU table setup, you should be able to run the vegdist function without any errors and use the output to run through adonis function
+#If you create a separate phyloseq object with this specific OTU table setup, 
+#you should be able to run the vegdist function without any errors and use the output to run through adonis function
       
 #Nasal
 dist.nw2 <- distance(phyloseq.nw2, method="bray") #Distance calculation using Bray-Curtis
@@ -417,7 +426,9 @@ full.tt2_2
 
 #FOURTH SECTION: Beta diversity
     
-#Purpose: This code generates non-metric multidimensional scaling ordination based on Bray-Curtis dissimilarities to create NMDS plots, and runs pairwise.adonis function to identify any significant differences in bacterial composition between treatment groups on a given day for each tissue.
+#Purpose: This code generates non-metric multidimensional scaling ordination based on Bray-Curtis dissimilarities 
+#to create NMDS plots, and runs pairwise.adonis function to identify any significant differences in bacterial composition 
+#between treatment groups on a given day for each tissue.
     
 #Files needed:
 #phyloseq.nw2
@@ -653,7 +664,8 @@ write.csv(tt.adon.good, file='tt.adon.good.txt', row.names=TRUE)
 
 #FIFTH SECTION: Alpha diversity
     
-#Purpose: This code calculates alpha diversity metrics (Shannon, Inverse Simpson) that are plotted as box and whisker plots, and uses wilcoxon rank sum test to assess any significant differences in diversity between treatment groups on a given day for each tissue.
+#Purpose: This code calculates alpha diversity metrics (Shannon, Inverse Simpson) that are plotted as box and whisker plots, 
+#and uses wilcoxon rank sum test to assess any significant differences in diversity between treatment groups on a given day for each tissue.
 
 #Files needed:
 #phyloseq.nw2
@@ -766,7 +778,9 @@ print(tt2.pairwise.wilcox.invsimpson.test)
 
 #SIXTH SECTION: Magnitude of Change in Nasal Microbiota
     
-#Purpose: This code plots the F-statistic from PERMANOVA pairwise comparisons of NON and either IM or IF groups, over time (displays the magnitude of change in the nasal bacterial community structure of the two antibiotic treatment groups relative to control)
+#Purpose: This code plots the F-statistic from PERMANOVA pairwise comparisons of NON and 
+#either IM or IF groups, over time (displays the magnitude of change in the nasal bacterial community structure 
+#of the two antibiotic treatment groups relative to control)
     
 #Files needed:
 #Nasal_MagnitudeOfChange.csv
@@ -785,7 +799,10 @@ library(ggrepel)
     
 #The F-values were obtained from nw.adon.good.txt data generated in the "Beta diversity" section
 #Nasal_MagnitudeOfChange.csv was created from nw.adon.good.txt data that was rearranged
-#To make the Nasal_MagnitudeOfChange.csv file, open nw.adon.good.txt file (created from FS1b_beta_diversity_each_tissue_phyloseq.R) in excel, copy columns "F. Model" through "p.adjusted2" and paste in a separate spreadsheet. Add "Day" and "Treatment" columns and save as "Nasal_MagnitudeOfChange.csv".
+#To make the Nasal_MagnitudeOfChange.csv file, open nw.adon.good.txt file 
+#(created from FS1b_beta_diversity_each_tissue_phyloseq.R) in excel, 
+#copy columns "F. Model" through "p.adjusted2" and paste in a separate spreadsheet. 
+#Add "Day" and "Treatment" columns and save as "Nasal_MagnitudeOfChange.csv".
     
 nasal <- read.csv("Nasal_MagnitudeOfChange.csv")
 class(nasal)
@@ -808,7 +825,8 @@ ggsave("Nasal_Magnitude.tiff", plot=nasal2, width = 10, height = 5, dpi = 500, u
 
 #SEVENTH SECTION: Differential Abundance of Genera in Nasal Microbiota using DESeq2
     
-#Purpose: This code uses DESeq2 package to identify nasal microbial genera that were differentially abundant between treatment groups and control group
+#Purpose: This code uses DESeq2 package to identify nasal microbial genera that were differentially abundant 
+#between treatment groups and control group
     
 #Files needed:
 #Mothur shared file: FS1bfinal.outsingletons.abund.opti_mcc.shared
@@ -936,8 +954,10 @@ deseq.D0.fc
 sigtab.D0.fc$OTU <- rownames(sigtab.D0.fc)
 sigtab.D0.fc$comp <- 'D0_nasal_IFvsNON'
     
-#Create a final table ('final.nonsigtab') that lists all genera that were differentially abundant between IF and NON treatment groups from 'sigtab.D0.fc'. 
-#Other within-day comparisons that had no significant changes in beta diversity between two treatment groups will be added to 'final.nonsigtab'.
+#Create a final table ('final.nonsigtab') that lists all genera that were differentially abundant 
+#between IF and NON treatment groups from 'sigtab.D0.fc'. 
+#Other within-day comparisons that had no significant changes in beta diversity between two treatment groups 
+#will be added to 'final.nonsigtab'.
 final.nonsigtab <- sigtab.D0.fc
     
 ########## Day 0 Nasal IM vs NON  ####################
@@ -1074,8 +1094,10 @@ sigtab.D4.fc$OTU <- rownames(sigtab.D4.fc)
 sigtab.D4.fc$comp <- 'D4_nasal_IFvsNON'
 #If there are duplicate OTU rownames, it'll add an extra "1, 2, 3" etc. in numerical order at the end of the rowname
     
-#Create a final table ('final.sigtab') that lists all genera that were differentially abundant between IF and NON treatment groups from 'sigtab.D4.fc'. 
-#Other within-day comparisons that had significant changes in beta diversity between two treatment groups will be added to 'final.sigtab'.
+#Create a final table ('final.sigtab') that lists all genera that were differentially abundant 
+#between IF and NON treatment groups from 'sigtab.D4.fc'. 
+#Other within-day comparisons that had significant changes in beta diversity between two treatment groups 
+#will be added to 'final.sigtab'.
 final.sigtab <- sigtab.D4.fc
     
 ########## Day 4 Nasal IM vs NON  ####################
@@ -1549,7 +1571,8 @@ fc_plot <- ggplot(final_fc, aes(x=Family_Genus, log2FoldChange, fill = comp)) +
 fc_plot
 write.csv(final_fc, file= "FS1b_FinalDiffAbundNasalGenus_FC.csv")
     
-#Modified FS1b_FinalDiffAbundNasalGenus_FC.csv in a spreadsheet editor by removing all genera except for Blautia, Lachnospiraceae_unclassified,Roseburia, Lactobacillus, Acinetobacter, Actinobacillus, and Streptococcus.
+#Modified FS1b_FinalDiffAbundNasalGenus_FC.csv in a spreadsheet editor by removing all genera except for 
+#Blautia, Lachnospiraceae_unclassified,Roseburia, Lactobacillus, Acinetobacter, Actinobacillus, and Streptococcus.
 #Saved modified file as FS1b_FinalDiffAbundNasalGenus_FC_final.csv
     
 #IF and NON Log2fold plot Part B
@@ -1625,7 +1648,8 @@ ic_plot <- ggplot(final_ic,  aes(x=Family_Genus, log2FoldChange, fill = comp)) +
 ic_plot
 write.csv(final_ic, file= "FS1b_FinalDiffAbundNasalGenus_IC.csv")
     
-#Modified FS1b_FinalDiffAbundNasalGenus_IC.csv in a spreadsheet editor by removing all genera except for Actinobacillus and Streptococcus.
+#Modified FS1b_FinalDiffAbundNasalGenus_IC.csv in a spreadsheet editor by removing all genera except for 
+#Actinobacillus and Streptococcus.
 #Saved modified file as FS1b_FinalDiffAbundNasalGenus_IC_final.csv
     
 #IM and NON Log2fold Plot Part B
@@ -1665,7 +1689,8 @@ ggsave("NasalDESeq.tiff", plot=ggtwo, width = 15, height = 5, dpi = 500, units =
 
 #EIGHTH SECTION: Nasal and Tonsil Microbiota: Genus Abundance
     
-#Purpose: This code generates a list of percent total genera found in each treatment group per day for each tissue and creates a bar graph plot of the data 
+#Purpose: This code generates a list of percent total genera found in each treatment group per day for each tissue and 
+#creates a bar graph plot of the data 
     
 #Files needed:
 #FS1bfinal.outsingletons.abund.opti_mcc.0.03.subsample.shared
@@ -1717,7 +1742,8 @@ fobar.gather <- fobar %>% gather(Genus, value, -(group:Treatment))  #This conver
 #This also created new columns "Genus", "value"; it added columns "group" through "Treatment" before "Genus" and "value"
 head(fobar.gather)
     
-#Check to see if there is an extra "group" column. If so, run the next set of commands (up to "head(fobar2)") and remove appropriate column
+#Check to see if there is an extra "group" column. If so, run the next set of commands (up to "head(fobar2)") and 
+#remove appropriate column
 which(colnames(phyla_tab2)=="group") #Results say column 237 is "group" column
 phyla_tab3 <- phyla_tab2[,-237] #Drop the 237th column
 phyla_tab4 <- phyla_tab3[,colSums(phyla_tab3)>0.1] #Keep the columns that have greater than 0.1 value
@@ -1743,7 +1769,27 @@ fobar2.gather$All <- paste(fobar2.gather$Day, fobar2.gather$Treatment, fobar2.ga
 #Count the number of unique items in 'fobar2.gather'. We're interested in the total unique number of genera
 fobar2.gather %>% summarise_each(funs(n_distinct)) #90 total unique genera
 fobar2.gather <- fobar2.gather %>% group_by(All) %>% mutate(value2=(value/(length(All)/90))*100) #90 refers to number of Genera
-    
+   
+#Subset each "All" group from fobar2.gather and save as individual csv files.
+#Two examples:
+D0_Control_NW.genus <- subset(fobar2.gather, All=="D0_Control_NW")
+write.csv(D0_Control_NW.genus, file="D0_Control_NW.genus.csv")
+
+D4_Infeed_TT.genus <- subset(fobar2.gather, All=="D4_Infeed_TT.genus")
+write.csv(D4_Infeed_TT.genus, file="D4_Infeed_TT.genus")
+
+#Calculate the total percent abundance of each genera on each sample (I used JMP to do this) 
+#and save results in a spreadsheet editor such as Excel (see D0_Control_NW.genus.xlsx for an example).
+#Since we are only interested in genera that are above 2% abundance, 
+#calculate total percentage of all other genera that are less than 2% in the spreadsheet and label as "Other".
+#Create a new spreadsheet and label as "Nasal genus.csv" or "Tonsil genus.csv". 
+#Create the following columns: Day, Treatment group, Tissue, Percent Abundance, and Genus. 
+#Copy the list of genera and their percent abundances from each of the individual Excel files to the respective "Nasal genus.csv" or "Tonsil genus.csv" spreadsheet.
+#Fill in the other columns manually (Day, Treatment Group, Tissue). 
+#You should have a file similar to "Nasal genus.csv". Continue to the next step.
+nasalgen = read.csv("Nasal genus.csv")
+tonsilgen = read.csv("Tonsil genus.csv")
+
 #Label nasal genera that have less than 2% abundance as "Other"
 nasalgen$More.than.2=as.character(nasalgen$Genus)
 str(nasalgen$More.than.2)
@@ -1757,8 +1803,10 @@ nasalgen$Treatment2[nasalgen$Treatment2 == 'Injected'] <- "IM"
 nasalgen$Treatment2[nasalgen$Treatment2 == 'Infeed'] <- "IF"
 write.csv(nasalgen, file = "Nasal_GenusPercentAbundanceAbove2percent.csv")
     
-#To make sure each day's bar added up to 100%, modify Nasal_GenusPercentAbundanceAbove2percent.csv in a spreadsheet editor and save as "Nasal_genus.csv"
-    
+#To make sure the total percent abundance of all organisms for each day adds up to 100%, 
+#modify the percent abundance for "Other" for each day in Nasal_GenusPercentAbundanceAbove2percent.csv in a spreadsheet editor 
+#and save as "Nasal_genus.csv"
+
 #Create nasal genera plot
 nasalgen2 = read.csv("Nasal_genus.csv", header = TRUE)
 nasalgen2.plot <- ggplot(data=nasalgen2, aes(x=Treatment2, y=Percent.abundance, fill=Genus)) +
@@ -1784,8 +1832,10 @@ str(tonsilgen$More.than.2)
 tonsilgen$More.than.2[tonsilgen$Percent.abundance<2]<-"Other"
 write.csv(tonsilgen, file = "Tonsil_GenusPercentAbundanceAbove2percent.csv")
     
-#To make sure each day's bar add up to 100%, modify Tonsil_GenusPercentAbundanceAbove2percent.csv in a spreadsheet editor and save as "Tonsil_genus.csv"
-    
+#To make sure the total percent abundance of all organisms for each day adds up to 100%, 
+#modify the percent abundance for "Other" for each day in Tonsil_GenusPercentAbundanceAbove2percent.csv in a spreadsheet editor 
+#and save as "Tonsil_genus.csv"
+
 #Tonsil
 tonsilgen2 = read.csv("Tonsil_genus.csv", header = TRUE)
     
@@ -1823,7 +1873,8 @@ ggsave("NasalTonsilGenera.tiff", plot=nw2tt2.combo, width = 15, height = 7, dpi 
 
 #NINTH SECTION: Nasal Oxytetracycline Levels
     
-#Purpose: This code generates a box & whisker plot depicting the nasal oxytetracycline levels measured from each treatment group
+#Purpose: This code generates a box & whisker plot depicting the nasal oxytetracycline levels measured from 
+#each treatment group
     
 #Files needed:
 #Nasal_results.csv
