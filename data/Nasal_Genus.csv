@@ -1,0 +1,149 @@
+﻿Day,Treatment group,Tissue,Percent abundance,Genus
+0,Control,Nasal,29.74,Moraxellaceae_unclassified
+0,Control,Nasal,23.61,Streptococcus
+0,Control,Nasal,9.3,Actinobacillus
+0,Control,Nasal,3.87,Flavobacteriaceae_unclassified
+0,Control,Nasal,3.37,Moraxella
+0,Control,Nasal,2.55,Carnobacteriaceae_unclassified
+0,Control,Nasal,2.43,Lactobacillus
+0,Control,Nasal,25.13,Other
+0,Medicated Feed,Nasal,32.83,Moraxellaceae_unclassified
+0,Medicated Feed,Nasal,12.68,Streptococcus
+0,Medicated Feed,Nasal,11.67,Actinobacillus
+0,Medicated Feed,Nasal,7.52,Flavobacteriaceae_unclassified
+0,Medicated Feed,Nasal,5.01,Moraxella
+0,Medicated Feed,Nasal,2.16,Lactobacillus
+0,Medicated Feed,Nasal,2.12,Carnobacteriaceae_unclassified
+0,Medicated Feed,Nasal,26.01,Other
+0,Parenteral,Nasal,37.72,Moraxellaceae_unclassified
+0,Parenteral,Nasal,14.95,Streptococcus
+0,Parenteral,Nasal,11.44,Actinobacillus
+0,Parenteral,Nasal,5.29,Flavobacteriaceae_unclassified
+0,Parenteral,Nasal,4.71,Moraxella
+0,Parenteral,Nasal,3.35,Carnobacteriaceae_unclassified
+0,Parenteral,Nasal,2.24,Neisseriaceae_unclassified
+0,Parenteral,Nasal,20.3,Other
+4,Control,Nasal,15.83,Moraxellaceae_unclassified
+4,Control,Nasal,11.06,Lactobacillus
+4,Control,Nasal,10.59,Streptococcus
+4,Control,Nasal,10.38,Actinobacillus
+4,Control,Nasal,5.15,Prevotellaceae_unclassified
+4,Control,Nasal,4.67,Megasphaera
+4,Control,Nasal,3.94,Flavobacteriaceae_unclassified
+4,Control,Nasal,3.57,Prevotella_9
+4,Control,Nasal,3.55,Lachnospiraceae_unclassified
+4,Control,Nasal,3.1,Phascolarctobacterium
+4,Control,Nasal,3.04,Ruminococcaceae_unclassified
+4,Control,Nasal,25.12,Other
+4,Medicated Feed,Nasal,30.69,Actinobacillus
+4,Medicated Feed,Nasal,14.12,Moraxellaceae_unclassified
+4,Medicated Feed,Nasal,7.77,Streptococcus
+4,Medicated Feed,Nasal,6.52,Lactobacillus
+4,Medicated Feed,Nasal,5.46,Prevotellaceae_unclassified
+4,Medicated Feed,Nasal,5.27,Lachnospiraceae_unclassified
+4,Medicated Feed,Nasal,3.81,Megasphaera
+4,Medicated Feed,Nasal,3.07,Phascolarctobacterium
+4,Medicated Feed,Nasal,2.35,Ruminococcaceae_unclassified
+4,Medicated Feed,Nasal,2.34,Moraxella
+4,Medicated Feed,Nasal,18.6,Other
+4,Parenteral,Nasal,22.64,Actinobacillus
+4,Parenteral,Nasal,12.94,Moraxellaceae_unclassified
+4,Parenteral,Nasal,10.5,Lactobacillus
+4,Parenteral,Nasal,6.56,Megasphaera
+4,Parenteral,Nasal,6.14,Prevotellaceae_unclassified
+4,Parenteral,Nasal,4.66,Streptococcus
+4,Parenteral,Nasal,4.21,Prevotella_9
+4,Parenteral,Nasal,3.64,Lachnospiraceae_unclassified
+4,Parenteral,Nasal,3.6,Phascolarctobacterium
+4,Parenteral,Nasal,2.52,Veillonellaceae_unclassified
+4,Parenteral,Nasal,2.45,Ruminococcaceae_unclassified
+4,Parenteral,Nasal,20.14,Other
+7,Control,Nasal,18.31,Lactobacillus
+7,Control,Nasal,15.64,Moraxellaceae_unclassified
+7,Control,Nasal,10.98,Megasphaera
+7,Control,Nasal,9.41,Actinobacillus
+7,Control,Nasal,3.87,Lachnospiraceae_unclassified
+7,Control,Nasal,3.82,Flavobacteriaceae_unclassified
+7,Control,Nasal,3.15,Blautia
+7,Control,Nasal,2.79,Phascolarctobacterium
+7,Control,Nasal,2.58,Ruminococcaceae_unclassified
+7,Control,Nasal,2.41,Streptococcus
+7,Control,Nasal,27.04,Other
+7,Medicated Feed,Nasal,37.53,Actinobacillus
+7,Medicated Feed,Nasal,18.88,Moraxellaceae_unclassified
+7,Medicated Feed,Nasal,4.34,Prevotellaceae_unclassified
+7,Medicated Feed,Nasal,3.9,Lachnospiraceae_unclassified
+7,Medicated Feed,Nasal,3.49,Lactobacillus
+7,Medicated Feed,Nasal,3.27,Streptococcus
+7,Medicated Feed,Nasal,3.07,Phascolarctobacterium
+7,Medicated Feed,Nasal,2.28,Ruminococcaceae_unclassified
+7,Medicated Feed,Nasal,2.15,Megasphaera
+7,Medicated Feed,Nasal,21.09,Other
+7,Parenteral,Nasal,36.35,Actinobacillus
+7,Parenteral,Nasal,20.74,Moraxellaceae_unclassified
+7,Parenteral,Nasal,5.69,Lactobacillus
+7,Parenteral,Nasal,4.25,Streptococcus
+7,Parenteral,Nasal,2.69,Lachnospiraceae_unclassified
+7,Parenteral,Nasal,2.48,Phascolarctobacterium
+7,Parenteral,Nasal,2.04,Ruminococcaceae_unclassified
+7,Parenteral,Nasal,25.76,Other
+11,Control,Nasal,31.17,Actinobacillus
+11,Control,Nasal,8.11,Lactobacillus
+11,Control,Nasal,6.02,Moraxellaceae_unclassified
+11,Control,Nasal,5.27,Streptococcus
+11,Control,Nasal,5.04,Lachnospiraceae_unclassified
+11,Control,Nasal,3.48,Phascolarctobacterium
+11,Control,Nasal,3.13,Ruminococcaceae_unclassified
+11,Control,Nasal,2.92,Prevotellaceae_unclassified
+11,Control,Nasal,2.47,Prevotella_9
+11,Control,Nasal,2.15,Veillonellaceae_unclassified
+11,Control,Nasal,2.14,Megasphaera
+11,Control,Nasal,28.1,Other
+11,Medicated Feed,Nasal,59.27,Pseudomonas
+11,Medicated Feed,Nasal,9.32,Janthinobacterium
+11,Medicated Feed,Nasal,6.65,Psychrobacter
+11,Medicated Feed,Nasal,6.64,Actinobacillus
+11,Medicated Feed,Nasal,3.09,Enterobacteriaceae_unclassified
+11,Medicated Feed,Nasal,2.75,Lactobacillales_unclassified
+11,Medicated Feed,Nasal,2.12,Pantoea
+11,Medicated Feed,Nasal,10.16,Other
+11,Parenteral,Nasal,21.18,Actinobacillus
+11,Parenteral,Nasal,11,Moraxellaceae_unclassified
+11,Parenteral,Nasal,9.03,Pseudomonas
+11,Parenteral,Nasal,7.94,Lactobacillus
+11,Parenteral,Nasal,6.86,Megasphaera
+11,Parenteral,Nasal,5.79,Flavobacterium
+11,Parenteral,Nasal,4.21,Sphingobacterium
+11,Parenteral,Nasal,3.35,Phascolarctobacterium
+11,Parenteral,Nasal,2.54,Lachnospiraceae_unclassified
+11,Parenteral,Nasal,2.52,Prevotellaceae_unclassified
+11,Parenteral,Nasal,2.37,Ruminococcaceae_unclassified
+11,Parenteral,Nasal,2.32,Streptococcus
+11,Parenteral,Nasal,2.01,Prevotella_9
+11,Parenteral,Nasal,18.88,Other
+14,Control,Nasal,38.34,Pseudomonas
+14,Control,Nasal,24.29,Psychrobacter
+14,Control,Nasal,5.63,Actinobacillus
+14,Control,Nasal,5.49,Janthinobacterium
+14,Control,Nasal,5.48,Lactobacillus
+14,Control,Nasal,4.21,Sphingobacterium
+14,Control,Nasal,2.91,Megasphaera
+14,Control,Nasal,13.65,Other
+14,Medicated Feed,Nasal,38.93,Pseudomonas
+14,Medicated Feed,Nasal,16.1,Psychrobacter
+14,Medicated Feed,Nasal,5.77,Actinobacillus
+14,Medicated Feed,Nasal,3.63,Megasphaera
+14,Medicated Feed,Nasal,3.3,Enterobacteriaceae_unclassified
+14,Medicated Feed,Nasal,2.7,Chryseobacterium
+14,Medicated Feed,Nasal,2.6,Veillonellaceae_unclassified
+14,Medicated Feed,Nasal,2.48,Lactobacillus
+14,Medicated Feed,Nasal,2.41,Acinetobacter
+14,Medicated Feed,Nasal,2.22,Phascolarctobacterium
+14,Medicated Feed,Nasal,19.86,Other
+14,Parenteral,Nasal,32.66,Pseudomonas
+14,Parenteral,Nasal,22.92,Psychrobacter
+14,Parenteral,Nasal,12.76,Aeromonas
+14,Parenteral,Nasal,8.87,Lactobacillus
+14,Parenteral,Nasal,4.96,Actinobacillus
+14,Parenteral,Nasal,2.51,Ruminococcaceae_unclassified
+14,Parenteral,Nasal,15.32,Other
