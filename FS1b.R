@@ -1,4 +1,4 @@
-#R scripts for analyzing and visualizing data from the research paper "Shifts in the nasal microbiota of swine in response to different routes of oxytetracycline administration"
+#R scripts for analyzing and visualizing data from the research paper "Shifts in the nasal microbiota of swine in response to different dosing regimens of oxytetracycline administration"
 
 #################################################################################################################################################################################################
 
