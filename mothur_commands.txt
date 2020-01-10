@@ -1,6 +1,6 @@
 #FIRST SECTION: Processing 16S amplicon sequences using mothur
     
-#Purpose: To use mothur to process paired-end 16S rRNA gene sequences from the research paper "Shifts in the nasal microbiota of swine in response to different routes of oxytetracycline administration".
+#Purpose: To use mothur to process paired-end 16S rRNA gene sequences from the research paper "Shifts in the nasal microbiota of swine in response to different dosing regimens of oxytetracycline administration".
 
 #Files needed:
 #*.fastq files from Bioproject PRJNA518919
