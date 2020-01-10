@@ -142,7 +142,7 @@ remove.groups(count=FS1bfinal.trim.contigs.good.unique.good.filter.unique.preclu
 #Renamed 'FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta' to 'FS1bfinal.outsingletons.fasta'
 #Renamed 'FS1bfinal.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.pick.count_table' to 'FS1bfinal.outsingletons.count_table'
 
-#Check sequence quality using fastQC and multiQC, FS1b5000count directory
+#Check sequence quality using fastQC and multiQC, and work within a new directory (in this case, "FS1b5000count" directory)
 #Download fastqc to your computer and enter in the terminal the following commands:
 fastqc
 mkdir fastqc
